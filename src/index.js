@@ -4,49 +4,50 @@ const icon = require('./plugin-icon.png');
 const { memoize } = require('cerebro-tools');
 
 /**
- * API key for giphy.com
+ * API key for unsplash.com
  * @type {String}
  */
-const API_KEY = 'dc6zaTOxFJmzC';
+const API_KEY = '8ce23e9b920ba876e98f4c5f6787cc57a70f0832561850541a996fa0d75cdbfe';
+
 
 /**
- * Fetch gifs from giphy API
+ * Fetch photos from Unsplash API 
  *
  * @param  {Function} searchTerm
  * @return {Promise}
  */
-const fetchGifs = searchTerm => {
-  const url = `http://api.giphy.com/v1/gifs/search?q=${encodeURIComponent(searchTerm)}&api_key=${API_KEY}`;
+const fetchPhotos = searchTerm => {
+  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchTerm)}&client_id=${API_KEY}`;
   return fetch(url)
     .then(resp => resp.json())
-    .then(resp => resp.data);
+    .then(resp => resp.results);
 };
 
 /**
- * Version of fetchGifs with caching
+ * Version of fetchPhotos with caching
  *
  * @type {Function}
  */
-const cachedFetchGifs = memoize(fetchGifs);
+const cachedFetchPhotos = memoize(fetchPhotos);
 
 /**
- * Cerebro plugin to find gifs related to something
+ * Cerebro plugin to find photos
  *
  * @param  {String} options.term
  * @param  {Function} options.display
  */
 const fn = ({term, display, actions}) => {
-  let match = term.match(/^gif\s+(.+)/i);
-  match = match || term.match(/(.+)\sgif$/i);
+  let match = term.match(/^photo\s+(.+)/i);
+  match = match || term.match(/(.+)\sphoto$/i);
   if (match) {
-    cachedFetchGifs(match[1]).then(results => {
+    cachedFetchPhotos(match[1]).then(results => {
       const response = results.map(item => ({
         icon,
         id: item.id,
-        title: item.images.original.url,
-        clipboard: item.images.original.url,
-        onSelect: () => actions.copyToClipboard(item.images.original.url),
-        getPreview: () => <Preview images={item.images} id={item.id}  />
+        title: item.urls.raw,
+        clipboard: item.urls.raw,
+        onSelect: () => actions.copyToClipboard(item.urls.raw),
+        getPreview: () => <Preview urls={item.urls} id={item.id} user={item.user}  />
       }));
       display(response);
     })
@@ -56,6 +57,6 @@ const fn = ({term, display, actions}) => {
 module.exports = {
   fn,
   icon,
-  name: 'Find relevant gif',
-  keyword: 'gif',
+  name: 'Find relevant photos',
+  keyword: 'photo',
 };

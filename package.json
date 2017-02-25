@@ -1,13 +1,13 @@
 {
-  "name": "cerebro-gif",
-  "version": "0.2.0",
-  "description": "Cerebro plugin to find relevant gifs",
+  "name": "cerebro-photos",
+  "version": "0.0.1",
+  "description": "Cerebro plugin to find pictures on Unsplash",
   "license": "MIT",
-  "repository": "KELiON/cerebro-gif",
+  "repository": "matmunn/cerebro-photos",
   "author": {
-    "name": "Alexandr Subbotin",
-    "email": "kelionweb@gmail.com",
-    "url": "asubbotin.ru"
+    "name": "Mat Munn",
+    "email": "mat@matmunn.me",
+    "url": "matmunn.me"
   },
   "engines": {
     "node": ">=4"
@@ -19,8 +19,9 @@
   },
   "main": "dist/index.js",
   "keywords": [
-    "gif",
-    "gifs",
+    "unsplash",
+    "photo",
+    "wallpaper",
     "search",
     "find",
     "cerebro",

@@ -14,3 +14,7 @@
   font-size: 0.8em;
   color: var(--secondary-font-color);
 }
+
+.details a {
+    color: var(--main-font-color);
+}

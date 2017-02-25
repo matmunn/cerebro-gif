@@ -1,14 +1,14 @@
 const React = require('react');
 const styles = require('./styles.css');
-const bytesToSize = require('./bytesToSize');
 
-module.exports = ({ images, id }) => {
-  const { url } = images.downsized;
-  const { width, height, size } = images.original;
+module.exports = ({ urls, id, user }) => {
+  const url = urls.small;
+  const photographer = user.name;
+  const photographerLink = user.links.html;
   return (
     <div key={id}>
       <img src={url} className={styles.preview} />
-      {<div className={styles.details}>{width}x{height}px, {bytesToSize(size)}</div>}
+      {<div className={styles.details}>Photo by <a href={photographerLink}>{photographer}</a> / <a href="http://www.unsplash.com">Unsplash</a></div>}
     </div>
   );
 };
