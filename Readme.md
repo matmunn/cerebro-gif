@@ -1,6 +1,6 @@
 # cerebro-photos
 
-> [Cerebro](http://www.cerebroapp.com) plugin to find relevant gifs using [giphy](http://giphy.com/) API
+> [Cerebro](http://www.cerebroapp.com) plugin to find photos using the [Unsplash](http://unsplash.com/) API.
 
 ![](screenshot.gif)
 
