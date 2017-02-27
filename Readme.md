@@ -6,7 +6,7 @@
 
 ## Usage
 
-In Cerebro, type `photo something` or `something photo`, to find gifs, related to something.
+In Cerebro, type `photo something` or `something photo`, to find photos about your keyword.
 
 Use <kbd>Cmd/Ctrl + C</kbd> to copy url of found photo to clipboard.
 
