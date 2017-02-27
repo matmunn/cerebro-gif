@@ -2,7 +2,7 @@
 
 > [Cerebro](http://www.cerebroapp.com) plugin to find photos using the [Unsplash](http://unsplash.com/) API.
 
-![](screenshot.gif)
+![](screenshot.jpg)
 
 ## Usage
 
