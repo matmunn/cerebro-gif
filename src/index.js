@@ -40,17 +40,21 @@ const fn = ({term, display, actions}) => {
   let match = term.match(/^photo\s+(.+)/i);
   match = match || term.match(/(.+)\sphoto$/i);
   if (match) {
-    cachedFetchPhotos(match[1]).then(results => {
-      const response = results.map(item => ({
-        icon,
-        id: item.id,
-        title: item.urls.raw,
-        clipboard: item.urls.raw,
-        onSelect: () => actions.copyToClipboard(item.urls.raw),
-        getPreview: () => <Preview urls={item.urls} id={item.id} user={item.user}  />
-      }));
-      display(response);
-    })
+    clearTimeout(this.runFunc)
+
+    this.runFunc = setTimeout(() => {
+      cachedFetchPhotos(match[1]).then(results => {
+        const response = results.map(item => ({
+          icon,
+          id: item.id,
+          title: item.urls.raw,
+          clipboard: item.urls.raw,
+          onSelect: () => actions.copyToClipboard(item.urls.raw),
+          getPreview: () => <Preview urls={item.urls} id={item.id} user={item.user}  />
+        }));
+        display(response);
+      })
+    }, 800)
   }
 };
 
