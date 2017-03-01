@@ -18,9 +18,15 @@ const API_KEY = '8ce23e9b920ba876e98f4c5f6787cc57a70f0832561850541a996fa0d75cdbf
  */
 const fetchPhotos = searchTerm => {
   const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchTerm)}&client_id=${API_KEY}`;
-  return fetch(url)
-    .then(resp => resp.json())
-    .then(resp => resp.results);
+  return fetch(url).then(resp => {
+    if (resp.status === 403) {
+      return "rateLimited";
+    } else if (resp.status === 422) {
+      return "unexpectedError";
+    } else {
+      return resp.json().then(resp => resp.results)
+    }
+  });
 };
 
 /**
@@ -40,17 +46,38 @@ const fn = ({term, display, actions}) => {
   let match = term.match(/^photo\s+(.+)/i);
   match = match || term.match(/(.+)\sphoto$/i);
   if (match) {
-    cachedFetchPhotos(match[1]).then(results => {
-      const response = results.map(item => ({
-        icon,
-        id: item.id,
-        title: item.urls.raw,
-        clipboard: item.urls.raw,
-        onSelect: () => actions.copyToClipboard(item.urls.raw),
-        getPreview: () => <Preview urls={item.urls} id={item.id} user={item.user}  />
-      }));
-      display(response);
-    })
+    clearTimeout(this.runFunc)
+
+    this.runFunc = setTimeout(() => {
+      cachedFetchPhotos(match[1]).then(results => {
+        var response;
+        if (results === "rateLimited") {
+          response = {
+            title: "Couldn't complete search - API rate limit reached."
+          }
+        } else if (results === "unexpectedError") {
+          response = {
+            title: "An unepected error occurred while searching for photos."
+          }
+        } else {
+          if (results.length === 0) {
+            response = {
+              title: "No photo results were found on Unsplash."
+            }
+          } else {
+            response = results.map(item => ({
+              icon,
+              id: item.id,
+              title: item.urls.raw,
+              clipboard: item.urls.raw,
+              onSelect: () => actions.copyToClipboard(item.urls.raw),
+              getPreview: () => <Preview urls={item.urls} id={item.id} user={item.user}  />
+            }))
+          }
+        }
+        display(response)
+      })
+    }, 800)
   }
 };
 
