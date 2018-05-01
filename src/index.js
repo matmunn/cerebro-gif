@@ -70,7 +70,10 @@ const fn = ({term, display, actions}) => {
               id: item.id,
               title: item.urls.raw,
               clipboard: item.urls.raw,
-              onSelect: () => actions.copyToClipboard(item.urls.raw),
+              onSelect: () => {
+                fetch(`${item.links.download_location}?client_id=${API_KEY}`)
+                actions.copyToClipboard(item.urls.raw)
+              },
               getPreview: () => <Preview urls={item.urls} id={item.id} user={item.user}  />
             }))
           }
